@@ -1,0 +1,104 @@
+/* 
+Quick Tip 
+
+- Use the below function in the EmojiGame Component to shuffle the emojisList every time when an emoji is clicked.
+
+const shuffledEmojisList = () => {
+  const {emojisList} = this.props
+  return emojisList.sort(() => Math.random() - 0.5)
+}
+
+*/
+
+// Write your code here.
+import {Component} from 'react'
+import EmojiCard from '../EmojiCard'
+import WinOrLoseCard from '../WinOrLoseCard'
+import NavBar from '../NavBar'
+import './index.css'
+
+class EmojiGame extends Component {
+  state = {
+    emojisList: this.props.emojisList,
+    score: 0,
+    topScore: 0,
+    clickedList: [],
+    result: '',
+  }
+
+  shuffledEmojisList = () => {
+    const {emojisList} = this.props
+    return emojisList.sort(() => Math.random() - 0.5)
+  }
+
+  shuffledEmojisList = id => {
+    const {emojisList} = this.state
+    const shuffledList = emojisList.sort(() => Math.random() - 0.5)
+    this.setState(prvState => {
+      if (prvState.clickedList.includes(id)) {
+        return {
+          emojisList: shuffledList,
+          score: prvState.score,
+          topScore: prvState.score,
+          clickedList: id,
+          result: 'lose',
+        }
+      }
+      return {
+        emojisList: shuffledList,
+        score: 12,
+        topScore: prvState.topScore,
+        clickedList: [...prvState.clickedList, id],
+        result: '',
+      }
+    })
+  }
+
+  EmojisListCode = () => {
+    const {emojisList, score, topScore} = this.state
+
+    return (
+      <ul className="emojisListContainer">
+        {emojisList.map(each => (
+          <EmojiCard
+            onEmojiClick={this.shuffledEmojisList}
+            key={each.id}
+            emoji={each}
+          />
+        ))}
+      </ul>
+    )
+  }
+
+  onPlayAgain = () => {
+    this.setState(prvState => ({
+      emojisList: this.shuffledEmojisList(),
+      score: 0,
+      topScore: prvState.topScore,
+      clickedList: [],
+      result: '',
+    }))
+  }
+
+  render() {
+    const {emojisList, score, topScore, result} = this.state
+
+    return (
+      <div className="bg-container">
+        <NavBar score={score} topScore={topScore} />
+        <div className="emojiGame-container">
+          {result === '' ? (
+            <this.EmojisListCode />
+          ) : (
+            <WinOrLoseCard
+              onPlayAgain={this.onPlayAgain}
+              score={score}
+              result={result}
+            />
+          )}
+        </div>
+      </div>
+    )
+  }
+}
+export default EmojiGame
