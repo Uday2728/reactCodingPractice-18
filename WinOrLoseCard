@@ -1,0 +1,79 @@
+// Write your code here.
+import './index.css'
+
+// score={score} result
+
+const Lose = props => {
+  const {score} = props
+  return (
+    <div className="emojisListContainer">
+      <div>
+        <h1 className="result-heading">You Lose</h1>
+        <div>
+          <p className="score-tag">Score</p>
+          <p className="score">3/12</p>
+          <button
+            onClick={props.onPlayAgain}
+            type="button"
+            className="playAgain"
+          >
+            Play Again
+          </button>
+        </div>
+      </div>
+      <img
+        alt="win or lose"
+        className="loseImgage"
+        src="https://assets.ccbp.in/frontend/react-js/lose-game-img.png"
+      />
+    </div>
+  )
+}
+
+const Win = props => {
+  const {score} = props
+  const scoreContainer = document.getElementById('scoreContainer')
+  scoreContainer.style.display = 'none'
+
+  return (
+    <div className="emojisListContainer">
+      <div>
+        <h1 className="result-heading">You Won</h1>
+        <div>
+          <p className="score-tag">Best Score</p>
+          <p className="score">12/12</p>
+          <button
+            onClick={props.onPlayAgain}
+            type="button"
+            className="playAgain"
+          >
+            Play Again
+          </button>
+        </div>
+      </div>
+      <img
+        alt="win or lose"
+        className="loseImgage"
+        src="https://assets.ccbp.in/frontend/react-js/won-game-img.png"
+      />
+    </div>
+  )
+}
+
+const WinOrLoseCard = props => {
+  const {score, onPlayAgain, result} = props
+  if (score === 12) {
+    return <Win score={score} onPlayAgain={onPlayAgain} />
+  }
+  return <Lose score={score} onPlayAgain={onPlayAgain} />
+}
+
+// const WinOrLoseCard = props => {
+//   const { score, onPlayAgain, result } = props;
+//   if (score === 12) {
+//     return <Win onPlayAgain={onPlayAgain} />;
+//   }
+//   return <Lose onPlayAgain={onPlayAgain} />;
+// }
+
+export default WinOrLoseCard
